@@ -1,0 +1,50 @@
+<article class="_pea-form">
+	<div class="_pea-document">
+		<div class="_pea-row">
+			<div class="_pea-row" id="exportBackupSelection">
+<!-- 				<div>
+					<p>Export your database.</p>
+				</div> -->
+				<div class="_pea-col-span12">
+					<form class="_pea-form  _pea-ajax-form noFormSubmit" method="post" action="/p-admin/replication/replicatenow" data-successfunction="displayReplicationStatus" data-beforesubmitfunction="showReplicationStatusResult"  data-errorfunction="handleAjaxError">
+						<input type="hidden" name="_csrf" value=<%= locals.token %> >
+						<% if(replicationsettingsjson && replicationsettingsjson.cron && replicationsettingsjson.cron[currentenv]){%>
+							<h3>Scheduled Replication</h3>
+							<div class="_pea-row _pea-container-forminput">
+								<ul class="_pea-col-span10">
+									<li><strong>Environment [<%- currentenv %>]</strong>: Scheduled to replicate from <span class="_pea-button _pea-text-small"><%- replicationsettingsjson.cron[currentenv].replicationfrom %></span></li>
+									<li><strong>Next Replication Task</strong>: <%- nextreplicationfromnow %> <span class="_pea-button _pea-text-small"><%- nextreplicationformatted %></span></li>
+								</ul>
+							</div>
+						<%} %>
+						<h3>Replicate now from 
+						<select id="replicationenvironmentlist" name="replicationenvironmentlist">
+							<% if(replicationsettingsjson && replicationsettingsjson.environment){%>
+								<option>Select an environment</option>
+								<% for(var i in replicationsettingsjson.environment){ %>
+									<option value="<%- i %>"><%- i %></option>
+								<%};
+							}
+							else {%>
+								<option>No seeds files</option>
+							<%}%>
+						</select>
+						</h3>
+						
+						<div class="_pea-row _pea-container-forminput _pea-text-center">
+							<input type="submit" name="save_button" style="font-size: 125%;" value="Run Replication" class="_pea-button _pea-color-success"/>
+						</div>
+					</form>
+				</div>
+			</div>
+			<div class="_pea-row">
+				<div id="replicationstatuscontainer" class="_pea-col-span12 " style="display:none;">
+					<h3>Export status</h3>
+					<textarea id="replicationstatustextarea" class="textarea-tall noFormSubmit _pea-col-span12">
+						Exporting Data
+					</textarea>
+				</div>
+			</div>
+		</div>
+	</div>
+</article>

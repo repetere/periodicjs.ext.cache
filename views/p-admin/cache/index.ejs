@@ -1,0 +1,40 @@
+<% include ../../../../periodicjs.ext.admin/views/shared/header %>
+<% include ../../../../periodicjs.ext.admin/views/shared/nav %>
+	<style>
+	.CodeMirror{
+		height:auto;
+	}
+	</style>
+	<input type="hidden" name="_csrf" value=<%= locals.token %> >
+	<div class="_pea-container">
+		<div class="_pea-row">
+			<div class="_pea-col-span7">
+				<div class="_pea-row">
+					<div class="_pea-col-span12">
+						<div id="tabs" class="tabs">
+							<nav>
+								<ul class="_pea-col-span12">
+									<li class="_pea-col-span12 _pea-no-margin">Periodic Replication</li>
+									<!-- <li class="_pea-col-span6 _pea-no-margin">Restore Periodic</li> -->
+								</ul>
+							</nav>
+							<div class="content">
+								<section class="_pea-no-padding">
+									<% include _replication_tab %>
+								</section>
+								<!-- <section class="_pea-no-padding">
+									< % include _restore_tab %>
+								</section> -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="_pea-col-span4 _pea-pull-right">
+				<% include _more_info_pane %>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="<%= locals.themehelper.extensionPublicResourcePath('periodicjs.ext.admin','js') %>wysihtml5-advanced.js"></script>
+	<script type="text/javascript" src="<%= locals.themehelper.extensionPublicResourcePath('periodicjs.ext.admin','js') %>wysihtml5-0.4.0pre.min.js"></script>
+<% include  ../../../../periodicjs.ext.admin/views/shared/footer %>

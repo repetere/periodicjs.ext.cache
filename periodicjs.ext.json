@@ -1,0 +1,11 @@
+{
+	"periodicCompatibility":"3.0.0",
+	"periodicDependencies": [],
+	"periodicjs.ext.admin": {
+		"menu": {
+			"Extensions": {
+				"Cache Settings": "<a href=\"/p-admin/extension/periodicjs.ext.cache/\">Cache Settings</a>"
+			}
+		}
+	}
+}
