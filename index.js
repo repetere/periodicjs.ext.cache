@@ -1,5 +1,5 @@
 'use strict';
-var path = require('path');
+// var path = require('path');
 /**
  * An extension to import json caches into periodic mongodb.
  * @{@link https://github.com/typesettin/periodicjs.ext.cache}
@@ -11,8 +11,12 @@ var path = require('path');
  */
 module.exports = function (periodic) {
 	// express,app,logger,config,db,mongoose
+	periodic.app.controller.extension.cache = {
+		cache: require('./controller/cache')(periodic)
+	};
+
 	var cacheRouter = periodic.express.Router(),
-		cacheController = require('./controller/cache')(periodic);
+		cacheController = periodic.app.controller.extension.cache.cache;
 
 	// for (var x in periodic.settings.extconf.extensions) {
 	// 	if (periodic.settings.extconf.extensions[x].name === 'periodicjs.ext.admin') {
@@ -22,4 +26,5 @@ module.exports = function (periodic) {
 	// }
 
 	// periodic.app.use('/p-admin/cache', cacheRouter);
+	return periodic;
 };

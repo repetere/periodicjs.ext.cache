@@ -1,7 +1,7 @@
 {
   "name": "periodicjs.ext.cache",
   "description": "An extension for seeding db with data",
-  "version": "3.1.1",
+  "version": "4.0.0",
   "main": "index.js",
   "engines": {
     "node": ">=0.10.x"
@@ -24,6 +24,7 @@
     "async": "0.9.0",
     "fs-extra": "0.12.0",
     "periodicjs.component.tabs": "^1.1.0",
+    "periodicjs.core.extensions": "~4.0.0",
     "periodicjs.core.utilities": "~3.1.1"
   },
   "devDependencies": {
