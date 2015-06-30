@@ -1,7 +1,6 @@
 'use strict';
 
-var Utilities = require('periodicjs.core.utilities'),
-	fs = require('fs-extra'),
+var fs = require('fs-extra'),
 	path = require('path'),
 	CoreUtilities,
 	// CoreController,
@@ -30,7 +29,7 @@ var controller = function (resources) {
 	mongoose = resources.mongoose;
 	appSettings = resources.settings;
 	// CoreController = new ControllerHelper(resources);
-	CoreUtilities = new Utilities(resources);
+	CoreUtilities = resources.core.utilities;
 	appenvironment = appSettings.application.environment;
 	try{
 		fs.readJson(cacheconfigfile,function(err,cacheconfigjson){
