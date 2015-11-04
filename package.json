@@ -1,7 +1,7 @@
 {
   "name": "periodicjs.ext.cache",
   "description": "An extension for seeding db with data",
-  "version": "5.9.0",
+  "version": "5.9.1",
   "main": "index.js",
   "engines": {
     "node": ">=0.10.x"

@@ -7,7 +7,7 @@ var fs = require('fs-extra'),
 	appSettings,
 	appenvironment,
 	cacheconfig,
-	cacheconfigfile = path.resolve(process.cwd(), 'content/config/extensions/periodicjs.ext.cache/settings.json'),
+	cacheconfigfile = path.resolve(__dirname, '../../../content/config/extensions/periodicjs.ext.cache/settings.json'),
 	mongoose,
 	logger;
 
