@@ -1,0 +1,8 @@
+<script type="template/javascript" id="compose_taxonomies_template">
+  <? for(var y in dataelements){ var dataelement=dataelements[y]; ?>
+  <span id="ts-datalist-tagged-cb-span-<?- dataelement.id ?>" class="ts-text-sm ts-margin-md ts-button" style="margin-left:0;" >
+  <input type="checkbox" id="ts-datalist-tagged-cb-<?- dataelement.id ?>" name="<?- dataelement.checkboxname ?>" value="<?- dataelement.id ?>" checked="checked" class="datalistcheckbox">
+   <?- dataelement.title ?>
+  </span>
+  <?} ?>
+</script>

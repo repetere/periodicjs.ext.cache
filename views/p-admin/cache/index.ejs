@@ -1,40 +1,69 @@
-<% include ../../../../periodicjs.ext.admin/views/shared/header %>
-<% include ../../../../periodicjs.ext.admin/views/shared/nav %>
-	<style>
-	.CodeMirror{
-		height:auto;
-	}
-	</style>
-	<input type="hidden" name="_csrf" value=<%= locals.token %> >
-	<div class="_pea-container">
-		<div class="_pea-row">
-			<div class="_pea-col-span7">
-				<div class="_pea-row">
-					<div class="_pea-col-span12">
-						<div id="tabs" class="tabs">
-							<nav>
-								<ul class="_pea-col-span12">
-									<li class="_pea-col-span12 _pea-no-margin">Periodic Replication</li>
-									<!-- <li class="_pea-col-span6 _pea-no-margin">Restore Periodic</li> -->
-								</ul>
-							</nav>
-							<div class="content">
-								<section class="_pea-no-padding">
-									<% include _replication_tab %>
-								</section>
-								<!-- <section class="_pea-no-padding">
-									< % include _restore_tab %>
-								</section> -->
-							</div>
+<% include ../../shared/header %>
+<div class="ts-container">
+	<section class="ts-text-container">
+
+		<div class="ts-row ts-text-xs">
+					
+			<div class="ts-col-span6">
+				<h3>Data Cache</h3>
+				<div class="ts-document">
+					<div class="ts-row">
+						<div class="ts-col-span7"><strong>Type:</strong></div><div class="ts-col-span4"><%- cache_config.dataCacheType %></div>
+					</div>
+					<hr>
+					<div class="ts-row">
+						<div class="ts-col-span7"><strong>Status:</strong></div><div class="ts-col-span4"><%- cache_config.data_cache_status %></div>
+					</div>
+					<hr>
+					<div class="ts-row">
+						<div class="ts-col-span7"><strong>Length:</strong></div><div class="ts-col-span4"><%- cache_size.data_cache_length %></div>
+					</div>
+					<hr>
+					<div class="ts-row">
+						<div class="ts-col-span7"><strong>Size:</strong></div><div class="ts-col-span4"><%- cache_size.data_cache_size %></div>
+					</div>
+					<hr>
+					<div class="ts-row">
+						<div class="ts-col-span12 ts-text-center">
+						<a class="ts-button-error-color ts-dialog-delete ts-button" data-href="/p-admin/cache/clear/data" data-deleted-redirect-href="/p-admin/cache">Clear Data Cache</a>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="_pea-col-span4 _pea-pull-right">
-				<% include _more_info_pane %>
+			<div class="ts-col-span6">
+				<h3>View Cache</h3>
+				<div class="ts-document">
+					<div class="ts-row">
+						<div class="ts-col-span7"><strong>Type:</strong></div><div class="ts-col-span4"><%- cache_config.viewCacheType %></div>
+					</div>
+					<hr>
+					<div class="ts-row">
+						<div class="ts-col-span7"><strong>Status:</strong></div><div class="ts-col-span4"><%- cache_config.view_cache_status %></div>
+					</div>
+					<hr>
+					<div class="ts-row">
+						<div class="ts-col-span7"><strong>Length:</strong></div><div class="ts-col-span4"><%- cache_size.view_cache_length %></div>
+					</div>
+					<hr>
+					<div class="ts-row">
+						<div class="ts-col-span7"><strong>Size:</strong></div><div class="ts-col-span4"><%- cache_size.view_cache_size %></div>
+					</div>
+					<hr>
+					<div class="ts-row">
+						<div class="ts-col-span12 ts-text-center">
+						<a class="ts-button-error-color ts-dialog-delete ts-button" data-href="/p-admin/cache/clear/view" data-deleted-redirect-href="/p-admin/cache">Clear View Cache</a>
+						</div>
+					</div>
+				</div>
 			</div>
+
 		</div>
-	</div>
-	<script type="text/javascript" src="<%= locals.themehelper.extensionPublicResourcePath('periodicjs.ext.admin','js') %>wysihtml5-advanced.js"></script>
-	<script type="text/javascript" src="<%= locals.themehelper.extensionPublicResourcePath('periodicjs.ext.admin','js') %>wysihtml5-0.4.0pre.min.js"></script>
-<% include  ../../../../periodicjs.ext.admin/views/shared/footer %>
+
+		<div class="ts-container-margin-sm ts-text-center">
+			<span class="ts-text-xx">
+				Global Cache is <span class="ts-button"><%- cache_config.status %></span>
+			</span>
+		</div>
+	</section>
+</div>
+<% include ../../shared/footer %>

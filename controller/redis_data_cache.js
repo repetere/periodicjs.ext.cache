@@ -39,7 +39,7 @@ var RedisDataCache = class RedisDataCache extends DataCache{
 			// var self = this;
 			this.client.keys(this.prefix + '*', (err, keys) => {
 				this._size = (keys.length) ? keys.length : 0;
-				console.log('check redis cache length this._size',this._size);
+				// console.log('check redis cache length this._size',this._size);
 				asyncCallback(null,this._size);
 			});
 
@@ -68,7 +68,7 @@ var RedisDataCache = class RedisDataCache extends DataCache{
       var output;
 			this.client.get(options.key/*prefix + key*/, (err, result) => {
 			  if (err) {
-			  	console.log('error in getting redis data');
+			  	// console.log('error in getting redis data');
 			    asyncCallback(err.toString());
 			  } 
 			  else if (!result) {
@@ -86,9 +86,8 @@ var RedisDataCache = class RedisDataCache extends DataCache{
 			    asyncCallback(null, output);
 			  }
 			});
-
-			console.log('get redisdatacache.length check');
-			this.length();
+			// console.log('get redisdatacache.length check');
+			// this.length();
 		}
 		catch(e){
 			asyncCallback(e);
@@ -124,7 +123,7 @@ var RedisDataCache = class RedisDataCache extends DataCache{
 
       client.setex(key, ttl, input, (err, reply) => {
         if (err) {
-			  	console.log('error in setting redis data');
+			  	// console.log('error in setting redis data');
 			    asyncCallback(err.toString());
         } 
         else if (!reply) {
@@ -133,9 +132,8 @@ var RedisDataCache = class RedisDataCache extends DataCache{
         else {
     	    asyncCallback(null, 'redis reply on setex: ' + reply);
           ++this._size;
-					console.log('set redisdatacache.length');
-					this.length();
-
+					// console.log('set redisdatacache.length');
+					// this.length();
         }
       });
 		}
@@ -155,10 +153,9 @@ var RedisDataCache = class RedisDataCache extends DataCache{
 			this.client.del(options.key, (err, count) => {
 			  var count = count || 0;
 			  this._size = this._size - count;
-
 			  asyncCallback(err, 'purged ' + count );
-				console.log('del redisdatacache.size');
-				this.length();
+				// console.log('del redisdatacache.size');
+				// this.length();
 			});
 		}
 		catch(e){
@@ -210,8 +207,8 @@ var RedisDataCache = class RedisDataCache extends DataCache{
 				    var count = count || 0;
 					  this._size = this._size - count;
 			      asyncCallback(err, 'purged ' + count + ' entries for prefix: ' + prefix);
-						console.log('clearCache redisdatacache.size');
-						this.length();
+						// console.log('clearCache redisdatacache.size');
+						// this.length();
 				  });
 			  }
 			});

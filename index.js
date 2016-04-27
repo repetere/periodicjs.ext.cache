@@ -29,14 +29,16 @@ module.exports = function (periodic) {
 
 	var cacheRouter = periodic.express.Router(),
 		cacheController = periodic.app.controller.extension.cache.cache;
+	let asyncadmin_route = periodic.app.locals.adminPath ||'p-admin';
 
-	// for (var x in periodic.settings.extconf.extensions) {
-	// 	if (periodic.settings.extconf.extensions[x].name === 'periodicjs.ext.admin') {
-	// 		cacheRouter.post('/replicatenow', cacheController.run_cache);
-	// 		cacheRouter.get('/', cacheController.index);
-	// 	}
-	// }
+	for (var x in periodic.settings.extconf.extensions) {
+		if (periodic.settings.extconf.extensions[x].name === 'periodicjs.ext.asyncadmin') {
+			cacheRouter.use('*',global.CoreCache.disableCache);
+			cacheRouter.post('/clear/:type', cacheController.clear_cache);
+			cacheRouter.get('/', cacheController.index);
+		}
+	}
 
-	// periodic.app.use('/p-admin/cache', cacheRouter);
+	periodic.app.use('/' + asyncadmin_route + '/cache',cacheRouter);
 	return periodic;
 };

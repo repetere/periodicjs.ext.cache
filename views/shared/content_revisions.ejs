@@ -1,0 +1,247 @@
+<input type="hidden" name="_csrf" value=<%= locals.token %> >
+<input type="hidden" name="content_entity_type" value="<%= genericdocname %>">
+<input type="hidden" name="docid" value="<%= genericdoc._id %>">
+<style>
+  .ts-col-span12 .ts-document{
+    margin-bottom: 2em;
+  }
+</style>
+<div class="ts-container">
+  <% var changedprops=[],
+  changesetnum = request.params.changeset,
+  changesetdata = genericdoc.changes[request.params.changeset-1];
+  for(var prop in changesetdata.changeset){
+    changedprops.push(prop);
+  } 
+  %>
+  <% include html_inject_precontent %>
+  <div class="ts-row">
+    <div class="ts-col-span12">
+      <h2 style="margin-bottom:2em;">
+        <a href="/p-admin/<%- genericdocnamelink %>/"> <%- genericdocTitle %> </a> &rsaquo; 
+        <a href="/p-admin/<%- genericdocname %>/edit/<%- genericdoc._id %>"> Edit </a> &rsaquo; 
+        <a href="/p-admin/<%- genericdocname %>/edit/<%- genericdoc._id %>/revisions"> Revisions </a> &rsaquo;
+        Changeset <%- changesetnum %>
+        
+        <input type="submit" name="save_button" style="font-size: 65%;" value="Revert Changes" class="ts-button ts-color-success ts-pull-right">
+        
+      </h2>
+      <div class="ts-col-span12">
+        <% include content_revision_meta %>
+      </div>
+      <%
+      for(var i in changedprops){
+        var changeTitle =  changedprops[i];
+        %>
+        <h2><%- changeTitle %></h2>
+        <%
+        if(changedprops[i]==='categories' || changedprops[i]==='tags'  || changedprops[i]==='assets' || changedprops[i]==='contenttypes' || changedprops[i]==='authors'){
+          var changedproplabel = changedprops[i];
+          %>
+          <div class="ts-row ts-container-forminput">
+            <div class="ts-document">
+              <div class="ts-row">
+                <div class="ts-col-span6"><h3>Current</h3></div>
+                <div class="ts-col-span6"><h3>Revision (<%- changesetnum %>)</h3></div>
+              </div>
+              <div class="ts-row">
+                <div class="ts-col-span6">
+                  <% genericdoc[changedprops[i]].forEach(function(changedpropitem){ %>
+                  <span class="ts-button ts-text-small" data-<%- changedproplabel %>-id="<%- changedpropitem._id %>">
+                    <% if(changedproplabel==='authors'){%>
+                    <%- changedpropitem.username %>
+                    <%}
+                    else{%>
+                    <%- changedpropitem.name %>
+                    <%
+                    if(changedproplabel==='assets' && changedpropitem.assettype.match(/image/gi) ){%>
+                    <div class="ts-text-center">
+                      <image class="ts-col-span3" src="<%- changedpropitem.fileurl%>"/>
+                      </div>
+                      <%}
+                    }%>
+                  </span>
+                  <% }); %>
+                </div>
+                <div class="ts-col-span6">
+                  <% changesetdata.changeset[changedprops[i]].forEach(function(changesetitem){%>
+                  <span class="ts-button ts-text-small" data-name="<%- changedproplabel %>" data-<%- changedproplabel %>-id="<%- changesetitem %>"><%- changesetitem  %></span>
+                  <input id="lp-cbx_<%- changesetitem %>" style="display:none;" name="<%- changedproplabel %>" type="checkbox" value="<%- changesetitem %>" checked="checked"></input>
+                  <%}); %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <%}
+          else if(changedprops[i]==='primaryasset' ){
+            var changedproplabel = changedprops[i];
+            %>
+            <div class="ts-row ts-container-forminput">
+              <div class="ts-document">
+                <div class="ts-row">
+                  <div class="ts-col-span6"><h3>Current</h3></div>
+                  <div class="ts-col-span6"><h3>Revision (<%- changesetnum %>)</h3></div>
+                </div>
+                <div class="ts-row">
+                  <div class="ts-col-span6">
+                    <% changedpropitem = genericdoc[changedprops[i]]; %>
+                    <span class="ts-button ts-text-small" data-<%- changedproplabel %>-id="<%- changedpropitem._id %>">
+                     <%- changedpropitem.name %><%
+                     if(changedpropitem.assettype.match(/image/gi) ){%>
+                     <div class="ts-text-center">
+                      <image class="ts-col-span3" src="<%- changedpropitem.fileurl%>"/>
+                      </div>
+                      <%} %>
+                    </span>
+                  </div>
+                  <div class="ts-col-span6">
+                    <% changesetitem = changesetdata.changeset[changedprops[i]];%>
+                    <span class="ts-button ts-text-small" data-name="<%- changedproplabel %>" data-<%- changedproplabel %>-id="<%- changesetitem %>"><%- changesetitem  %>
+                      
+                    </span>
+                    <input name="<%- changedproplabel %>" type="hidden" value="<%- changesetitem %>" ></input>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <%}
+            else if(changedprops[i]==='items'){
+              var changedproplabel = changedprops[i];
+              %>
+              <div class="ts-row ts-container-forminput">
+                <div class="ts-document">
+                  <div class="ts-row">
+                    <div class="ts-col-span6"><h3>Current</h3></div>
+                    <div class="ts-col-span6"><h3>Revision (<%- changesetnum %>)</h3></div>
+                  </div>
+                  <div class="ts-row">
+                    <div class="ts-col-span6">
+                      <% genericdoc[changedprops[i]].forEach(function(changedpropitem){ %>
+                      <div>
+                        <span class="ts-button ts-text-small" data-<%- changedproplabel %>-id="<%- changedpropitem.item._id %>">
+                          <%- changedpropitem.order %>    | <%- changedpropitem.item.name %>
+                        </span>
+                      </div>
+                      <% }); %>
+                    </div>
+                    <div class="ts-col-span6">
+                      <% changesetdata.changeset[changedprops[i]].forEach(function(changesetitem){%>
+                      <div>
+                        <span class="ts-button ts-text-small" data-name="<%- changedproplabel %>" data-<%- changedproplabel %>-id="<%- changesetitem.item %>"><%- changesetitem.order  %> | <%- changesetitem.item  %></span>
+                        <input id="lp-cbx_<%- changesetitem.item %>" style="display:none;" data-docid="<%- changesetitem.item %>" name="<%- changedproplabel %>" type="checkbox" value='{"item":"<%- changesetitem.item %>","order":"<%- changesetitem.order %>","additionalattributes":"<%- changesetitem.additionalattributes %>"}' checked="checked"></input>
+                      </div>
+                      <%}); %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <%}
+              else if(changedprops[i]==='content_entities'){
+                var changedproplabel = changedprops[i];
+                %>
+                <div class="ts-row ts-container-forminput">
+                  <div class="ts-document">
+                    <div class="ts-row">
+                      <div class="ts-col-span6"><h3>Current</h3></div>
+                      <div class="ts-col-span6"><h3>Revision (<%- changesetnum %>)</h3></div>
+                    </div>
+                    <div class="ts-row">
+                      <div class="ts-col-span6">
+                        <% genericdoc[changedprops[i]].forEach(function(changedpropitem){ %>
+                        <div>
+                          <% if(changedpropitem.entitytype === 'item'){%>
+                          <span class="ts-button ts-text-small" data-<%- changedproplabel %>-id="<%- changedpropitem.entity_item._id %>">
+                            <%- changedpropitem.order %>    | <%- changedpropitem.entity_item.name %>   | <%- changedpropitem.entitytype %>
+                          </span>
+                          <%}
+                          else{%>
+                          <span class="ts-button ts-text-small" data-<%- changedproplabel %>-id="<%- changedpropitem.entity_collection._id %>">
+                            <%- changedpropitem.order %>    | <%- changedpropitem.entity_collection.name %> | <%- changedpropitem.entitytype %>
+                          </span>
+                          <%}%>
+                        </div>
+                        <% }); %>
+                      </div>
+                      <div class="ts-col-span6">
+                        <% changesetdata.changeset[changedprops[i]].forEach(function(changesetitem){%>
+                        <div>
+                          <% if(changesetitem.entitytype === 'item'){%>
+                          <span class="ts-button ts-text-small" data-name="<%- changedproplabel %>" data-<%- changedproplabel %>-id="<%- changesetitem.entity_item %>" data-entitytype="<%- changesetitem.entitytype %>"><%- changesetitem.order  %> | <%- changesetitem.entity_item  %> | <%- changesetitem.entitytype %></span>
+                          <input id="lp-cbx_<%- changesetitem.entity_item %>" data-entitytype="<%- changesetitem.entitytype %>" data-docid="<%- changesetitem.entity_item %>" style="display:none;" name="<%- changedproplabel %>" type="checkbox" value='{"entity_item":"<%- changesetitem.entity_item %>","order":"<%- changesetitem.order %>","entitytype":"<%- changesetitem.entitytype %>","additionalattributes":"<%- changesetitem.additionalattributes %>"}' checked="checked"></input>
+                          <%}
+                          else{%>
+                          <span class="ts-button ts-text-small" data-name="<%- changedproplabel %>" data-<%- changedproplabel %>-id="<%- changesetitem.entity_collection %>" data-entitytype="<%- changesetitem.entitytype %>"><%- changesetitem.order  %> | <%- changesetitem.entity_collection  %> | <%- changesetitem.entitytype %></span>
+                          <input id="lp-cbx_<%- changesetitem.entity_collection %>" data-entitytype="<%- changesetitem.entitytype %>" data-docid="<%- changesetitem.entity_collection %>" style="display:none;" name="<%- changedproplabel %>" type="checkbox" value='{"entity_collection":"<%- changesetitem.entity_collection %>","order":"<%- changesetitem.order %>","entitytype":"<%- changesetitem.entitytype %>","additionalattributes":"<%- changesetitem.additionalattributes %>"}' checked="checked"></input>
+                          <%}%>
+                        </div>
+                        <%}); %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <%}
+                else if(changedprops[i]==='contenttypeattributes'){%>
+                <div class="ts-row ts-container-forminput">
+                  <div class="ts-document">
+                    <table>
+                      <thead>
+                        <tr>
+                          <th class="ts-col-span4"><h3>Current</h3></th>
+                          <th class="ts-col-span4"><h3>Revision</h3></th>
+                          <th class="ts-col-span4"><h3>diff</h3></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="ts-col-span4 vertical-top">
+                            <pre class="ts-console compare-revision-diff" data-diff-element="current" data-diff-attribute="<%- changedprops[i] %>" ><%- JSON.stringify(genericdoc[changedprops[i]],null,1) %></pre>
+                          </td>
+                          <td class="ts-col-span4 vertical-top">
+                            <pre class="ts-console compare-revision-diff" data-diff-element="revision" data-diff-attribute="<%- changedprops[i] %>" ><%- JSON.stringify(changesetdata.changeset[changedprops[i]] ,null,1) %></pre>
+                            <input type="hidden" name="contenttypeattributes" value="<%JSON.stringify(changesetdata.changeset[changedprops[i]])%>">
+                          </td>
+                          <td class="ts-col-span4 vertical-top">
+                            <pre class="ts-console compare-revision-diff" data-diff-element="result" data-diff-attribute="<%- changedprops[i] %>" >&nbsp;</pre>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+                <%}else{%>
+                <div class="ts-row ts-container-forminput">
+                  <div class="ts-document">
+                    <table class="ts-table vertical-top">
+                      <thead>
+                        <tr>
+                          <th class="ts-col-span4"><h3>Current</h3></th>
+                          <th class="ts-col-span4"><h3>Revision</h3></th>
+                          <th class="ts-col-span4"><h3>diff</h3></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td class="ts-col-span4 compare-revision-diff vertical-top" data-diff-element="current" data-diff-attribute="<%- changedprops[i] %>"><%- genericdoc[changedprops[i]] %></td>
+                          <td class="ts-col-span4 compare-revision-diff vertical-top" data-diff-element="revision" data-diff-attribute="<%- changedprops[i] %>" ><%- changesetdata.changeset[changedprops[i]] %>
+
+                          </td>
+                          <td class="ts-col-span4 compare-revision-diff vertical-top" data-diff-element="result" data-diff-attribute="<%- changedprops[i] %>">&nbsp;</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    <% if(changedprops[i]==='content'){%>
+                    <textarea style="display:none;" name="<%- changedprops[i] %>"><%- changesetdata.changeset[changedprops[i]] %></textarea>
+                    <%}
+                    else{%>
+                    <input type="hidden" name="<%- changedprops[i] %>" value="<%- changesetdata.changeset[changedprops[i]] %>">
+                    <%}%>
+                  </div>
+                </div>
+                <%}%>
+                <%
+              }
+              %>
+            </div>
+          </div>
+          <% include html_inject_postcontent %>
+        </div>

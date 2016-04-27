@@ -1,11 +1,22 @@
 {
-	"periodicCompatibility":"4.0.0",
-	"periodicDependencies": [],
-	"periodicjs.ext.admin": {
-		"menu": {
-			"Extensions": {
-				"Cache Settings": "<a href=\"/p-admin/extension/periodicjs.ext.cache/\">Cache Settings</a>"
-			}
-		}
-	}
+  "periodicCompatibility": "7.0.0",
+  "periodicDependencies": [],
+  "periodicjs.ext.asyncadmin": {
+    "menu": {
+      "Extensions": {
+        "cache": {
+          "userprivilege": "110",
+          "tree-item": "file",
+          "tree-item-label": "Cache Settings",
+          "tree-item-id": "ext.cache",
+          "tree-item-link": "/%locals.adminPath%/cache",
+          "tree-item-attributes": {
+            "class": "async-admin-ajax-link",
+            "title": "Test email settings",
+            "style": "background-image: url(/images/adminui/svg/database46.svg);"
+          }
+        }
+      }
+    }
+  }
 }

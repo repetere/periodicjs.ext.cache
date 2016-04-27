@@ -1,0 +1,19 @@
+<details open="open" class="ts-text-sm">
+	<summary>
+		<div class="ts-pull-right">
+	      <button class="ts-button ts-button-accent-color" type="submit" name="savebutton">save
+	      </button>
+		</div>
+		Content
+	</summary>
+	<aside>
+		<div class="ts-row ts-form-row">
+			<label for="generic-title" class="ts-label">Title</label>
+			<input id="generic-title" class="ts-input generic-title" type="text" placeholder="Title" value="<% if(genericdoc && typeof genericdoc.title==='string'){%><%- genericdoc.title %><%}%>" name="title"/>
+		</div>
+		<div id="bootstrap" class="ts-row ts-form-row">
+			<label for="generic-content" class="ts-label">Content</label>
+			<textarea id="generic-content<% if(genericdoc && typeof genericdocid!=='undefined'){%>-<%- genericdocid %><%}%>" class="ts-input generic-content ts-summernote" type="text" placeholder="Content" value="" name="content"><% if(genericdoc && typeof genericdoc.content==='string'){%><%- genericdoc.content %><%}%></textarea>
+		</div>
+	</aside>
+</details>

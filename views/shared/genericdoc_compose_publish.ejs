@@ -1,0 +1,91 @@
+<details open="open" class="ts-text-sm">
+	<summary>Publish Options</summary>
+	<aside>
+		<% if(genericdoc){%>
+			<div class="ts-row ts-form-row">
+			  <div class="ts-col-span2">
+			    <label class="ts-label"  for="docidlabel">ID:</label>
+			  </div>
+			  <div class="ts-col-span10">
+				  <input type="text" id="docidlabel" disabled="disabled" class="ts-input ts-text-sm" value="<%- genericdoc._id %>" >
+			  </div>
+			</div>
+			<div class="ts-row ts-form-row">
+			  <div class="ts-col-span2">
+			    <label  class="ts-label" id="docnamelabel">Name:</label>
+			  </div>
+			  <div class="ts-col-span10">
+			  	<input type="text" id="docnamelabel" class="ts-input ts-text-sm" name="name" value="<%- genericdoc.name %>" >
+				</div>
+			</div>
+		<%}%>
+		<div class="ts-row ts-form-row">
+		  <div class="ts-col-span2">
+		    <label for="status" class="ts-label">Status:</label>
+		  </div>
+		  <div class="ts-col-span10">
+		  	<% var docstatus = [{
+		    "value":"draft",
+		    "label":"Draft"
+		    },{
+		    "value":"schedule",
+		    "label":"Schedule in advance"
+		    },{
+		    "value":"publish",
+		    "label":"Publish"
+		    },{
+		    "value":"review",
+		    "label":"Review"
+		    },{
+		    "value":"trash",
+		    "label":"Trash"
+		    }]; %>
+			  <select name="status" id="status" class="ts-input ts-text-sm autoFormSubmit">
+			    <% docstatus.forEach(function(status){
+			      %>
+			        <option <% if(genericdoc && typeof genericdoc.status==='string' && genericdoc.status === status.value ){%> selected="selected"
+			        <%}%> value="<%- status.value %>"><%- status.label %></option>
+			      <%
+			      }); %>
+			  </select>
+		  </div>
+		</div>
+		<%if(genericdoc && !genericdoc.publishat){%>
+		<%}
+		else{%>
+		<div class="ts-row ts-form-row">
+	    <div class="ts-col-span2">
+	      <label class="ts-label">Date:</label>
+	    </div>
+		  <div class="ts-col-span10">
+	    	<input type="date" id="newitemdate" class="ts-input ts-text-sm" value="<%- serverdate %>" name="date">
+	    </div>
+	  </div>
+		<div class="ts-row ts-form-row">
+	    <div class="ts-col-span2">
+	      <label class="ts-label">Time:</label>
+	    </div>
+		  <div class="ts-col-span10">
+        <input type="time" id="newitemtime" class="ts-input ts-text-sm" value="<%- servertime %>" name="time">
+      </div>
+	  </div>
+		<%}%>
+	  <% if(typeof genericdoctypename === "string" && genericdoc){%>
+			<div class="ts-row  ts-text-center ts-text-sm ts-padding-lg">
+				<% if(genericdoctype && genericdoctype!=='Asset'){%>
+					<a href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>/new" target="_blank" class="ts-button">New</a>
+				<%} %>
+	      <a id="clone-item-button" class="ts-button">Clone</a>
+	      <% if(genericdoc){%> 
+	      	<a href=" <%
+	      	if(locals.cms_item_route){%>
+	      	<%- locals.cms_item_route.replace(/%doc.name%/gi,genericdoc.name).replace(/%doc._id%/gi,genericdoc._id) %> 
+	      	<%}
+	      	else{%> 
+	      	/<%- genericdoctypename %>/<%- genericdoc._id %> <%}%> " target="_blank" class="ts-button"/>View</a>
+	      	<a data-href="/<%- locals.adminPath %>/content/<%- genericdoctypename %>/<%- genericdoc._id %>/delete" data-deleted-redirect-href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>" class="ts-button ts-button-error-color ts-dialog-delete"/>Delete</a>
+	      <%}%>
+			</div>
+	  <%}%>
+	</aside>
+</details>

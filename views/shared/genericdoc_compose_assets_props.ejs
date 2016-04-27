@@ -1,0 +1,43 @@
+<% if(genericdoc){%>
+	<details class="ts-text-sm" open>
+		<summary>Asset Options</summary>
+		<aside>
+			<div class="ts-row ts-form-row">
+				<div class="ts-col-span12">
+				  <label class="ts-label"  for="docfileurllabel">file url:</label>
+				</div>
+				<div class="ts-col-span12">
+				  <input type="text" id="docfileurllabel" name="fileurl" class="ts-input ts-text-sm" value="<%- genericdoc.fileurl %>" >
+				</div>
+			</div>
+			<% if(genericdoc.size){%>
+			<div class="ts-row ts-form-row">
+				<div class="ts-col-span12">
+				  <label  class="ts-label" id="docperiodicfilenamelabel">file size:</label>
+				</div>
+				<div class="ts-col-span12">
+					<input type="text" id="docperiodicfilenamelabel" class="ts-input ts-text-sm" name="size" value="<%- locals.prettysize(genericdoc.size) %>" disabled>
+				</div>
+			</div>
+			<%}%>
+			<div class="ts-row ts-form-row">
+				<div class="ts-col-span12">
+				  <label  class="ts-label" id="doclocationtypelabel">location type:</label>
+				</div>
+				<div class="ts-col-span12">
+					<input type="text" id="doclocationtypelabel" class="ts-input ts-text-sm" name="locationtype" value="<%- genericdoc.locationtype %>" >
+				</div>
+			</div>
+			<% if(genericdoc.attributes && genericdoc.attributes.periodicFilename){%>
+			<div class="ts-row ts-form-row">
+				<div class="ts-col-span12">
+				  <label  class="ts-label" id="docperiodicfilenamelabel">Periodic Filename:</label>
+				</div>
+				<div class="ts-col-span12">
+					<input type="text" id="docperiodicfilenamelabel" class="ts-input ts-text-sm" name="attributes.periodicFilename" value="<%- genericdoc.attributes.periodicFilename %>" >
+				</div>
+			</div>
+			<%}%>
+		</aside>
+	</details>
+<%}%>

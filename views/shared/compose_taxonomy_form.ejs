@@ -1,0 +1,15 @@
+<input type="hidden" name="_csrf" value=<%- locals.token %> >
+<%if(typeof genericdocid !=='undefined'){%>
+	<input type="hidden" name="docid" value=<%- genericdocid %> >
+<%}%>
+<div class="ts-row">
+	<div class="ts-genericdoc-entry ts-col-span8 ts-screensm-col-span12 ts-screenxs-col-span12">
+		<% include genericdoc_compose_title_content %>
+		<% include genericdoc_compose_taxonomy_manager %>
+		<% include genericdoc_compose_content_attributes %>
+	</div>
+	<div class=" ts-col-span4 ts-screensm-col-span12 ts-screenxs-col-span12">
+		<% include genericdoc_compose_publish %>
+		<!-- add children/parent -->
+	</div>
+</div>

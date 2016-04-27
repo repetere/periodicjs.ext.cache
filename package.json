@@ -9,6 +9,10 @@
   },
   "contributors": [
     {
+      "email": "yaw.etse@gmail.com",
+      "name": "yawetse"
+    },
+    {
       "email": "janbialostok@gmail.com",
       "name": "Jan Bialostok",
       "url": "https://github.com/janbialostok"
@@ -53,6 +57,7 @@
     "periodicjs"
   ],
   "main": "index.js",
+  "license": "MIT",
   "maintainers": [
     {
       "email": "yaw.etse@gmail.com",
@@ -71,5 +76,5 @@
     "postuninstall": "node uninstall.js",
     "test": "mocha -R spec --recursive"
   },
-  "version": "6.0.0"
+  "version": "7.0.0"
 }

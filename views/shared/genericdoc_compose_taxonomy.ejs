@@ -1,0 +1,68 @@
+<details class="ts-text-sm" open="open" >
+  <summary>Taxonomy</summary>
+  <aside>
+    <div class="ts-document noFormSubmit">
+      <div class="ts-row ts-form-row ts-container-margin-md">
+        <input type="text" id="padmin-contenttypes" data-ajax-prop="contenttypes" data-ajax-source="/p-admin/content/contenttype/new" data-ajax-setdata-variable="genericdoc_contenttypes" 
+        class="ts-col-span12 ts-datalist-tagged" placeholder="Content Types" name="contenttypes-ts-datalist-tagged" data-ajax-formie="edit-<%- genericdoctypename %>-wysiwyg-form" />
+      </div>
+      <% if(genericdoctypename!=='category' && genericdoctypename!=='tag'){%>
+        <div class="ts-row ts-form-row ts-container-margin-md">
+          <input type="text" class="ts-col-span12 ts-datalist-tagged" 
+          id="padmin-tags" data-ajax-prop="tags" data-ajax-source="/p-admin/content/tag/new" data-ajax-setdata-variable="genericdoc_tags"  placeholder="Tags" name="tags-ts-datalist-tagged" data-ajax-formie="edit-<%- genericdoctypename %>-wysiwyg-form"/>
+        </div>
+        <div class="ts-row ts-form-row ts-container-margin-md">
+          <input type="text" id="padmin-categories" data-ajax-prop="categories" data-ajax-source="/p-admin/content/category/new"  data-ajax-setdata-variable="genericdoc_categories" class="ts-col-span12 ts-datalist-tagged" 
+          placeholder="Categories" name="categories-ts-datalist-tagged" data-ajax-formie="edit-<%- genericdoctypename %>-wysiwyg-form"/>
+        </div>
+        <div class="ts-row ts-form-row ts-container-margin-md">
+          <input type="text" id="padmin-authors" data-ajax-prop="authors" data-ajax-source="/p-admin/content/user/search" data-ajax-setdata-variable="genericdoc_authors" 
+          class="ts-col-span12 ts-datalist-tagged" placeholder="Authors" name="authors-ts-datalist-tagged" data-ajax-formie="edit-<%- genericdoctypename %>-wysiwyg-form"/>
+        </div>
+
+      <%} else if( genericdoctypename==='tag'){%>
+        <div class="ts-row ts-form-row ts-container-margin-md">
+          <input type="text" class="ts-col-span12 ts-datalist-tagged" 
+          id="padmin-parent" data-ajax-prop="parent" data-ajax-source="/p-admin/content/tag/new" data-ajax-setdata-variable="genericdoc_parenttax"  placeholder="Parent Tag" name="parent-ts-datalist-tagged" data-ajax-formie="edit-<%- genericdoctypename %>-wysiwyg-form"/>
+        </div>
+
+      <%} else if( genericdoctypename==='category'){%>
+        <div class="ts-row ts-form-row ts-container-margin-md">
+          <input type="text" class="ts-col-span12 ts-datalist-tagged" 
+          id="padmin-parent" data-ajax-prop="parent" data-ajax-source="/p-admin/content/category/new" data-ajax-setdata-variable="genericdoc_parenttax"  placeholder="Parent Category" name="parent-ts-datalist-tagged" data-ajax-formie="edit-<%- genericdoctypename %>-wysiwyg-form"/>
+        </div>
+
+      <%} %>
+    </div>
+  </aside>
+</details>
+<% 
+if(genericdoc && genericdoc.parent){%>
+<script type="text/javascript">
+  <%- locals.viewhelper.passObjToClient(genericdoc.parent,"genericdoc_parenttax") %>
+</script>
+<%}%>
+<% 
+if(genericdoc && genericdoc.tags){%>
+<script type="text/javascript">
+  <%- locals.viewhelper.passObjToClient(genericdoc.tags,"genericdoc_tags") %>
+</script>
+<%}%>
+<% if(genericdoc && genericdoc.categories){%>
+<script type="text/javascript">
+  <%- locals.viewhelper.passObjToClient(genericdoc.categories,"genericdoc_categories") %>
+</script>
+<%}%>
+<% if(genericdoc && genericdoc.authors){%>
+<script type="text/javascript">
+  <%- locals.viewhelper.passObjToClient(genericdoc.authors,"genericdoc_authors") %>
+</script>
+<%}%>
+<% if(genericdoc && genericdoc.contenttypes){%>
+<script type="text/javascript">
+  <%- locals.viewhelper.passObjToClient(genericdoc.contenttypes,"genericdoc_contenttypes") %>
+</script>
+<%}%>
+<% include _template_compose_taxonomies %>
+<!-- 
+<div id="tags-cbc" class="_ltr-cbc"><input id="lp-cbx_546608ee216039001a7cd1dc" name="tags" type="checkbox" value="546608ee216039001a7cd1dc" checked="checked"></input><input id="lp-cbx_55649562f34621960448bfe1" name="tags" type="checkbox" value="55649562f34621960448bfe1" checked="checked"></input></div> -->

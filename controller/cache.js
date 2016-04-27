@@ -1,14 +1,20 @@
 'use strict';
 const redis_url = require('redis-url');
 const redis = require('redis');
+const async = require('async');
+const ms = require('ms');
 const extend = require('utils-merge');
+const merge = require('utils-merge');
 const fs = require('fs-extra');
 const path = require('path');
+const pcacheSchema = require('../model/pcache');
 const RedisDataCache = require('./redis_data_cache');
 const RedisViewCache = require('./redis_view_cache');
+const MongoDataCache = require('./mongo_data_cache');
+const MongoViewCache = require('./mongo_view_cache');
 
 var CoreUtilities,
-	// CoreController,
+	CoreController,
 	appSettings,
 	appenvironment,
 	cacheconfig,
@@ -17,11 +23,24 @@ var CoreUtilities,
 	redis_config,
 	redis_config_obj,
 	redisClient,
-	logger;
+	logger,
+	pcacheModel;
 
 var init_global_cache = function(){
 	global.CoreCache.setOptions(cacheconfig);
-	if((cacheconfig.dataCacheType ==='redis-data-periodic' || cacheconfig.viewCacheType ==='redis-view-periodic') && cacheconfig.status==='active'){
+	if((cacheconfig.dataCacheType ==='mongo-data-periodic' || cacheconfig.viewCacheType ==='mongo-view-periodic') && cacheconfig.status==='active'){
+	
+		pcacheModel = mongoose.model('Pcache', pcacheSchema(ms(cacheconfig.viewCacheTTL)));
+		if(cacheconfig.dataCacheType ==='mongo-data-periodic'){
+			global.CoreCache.DataCache = new MongoDataCache({client:pcacheModel});
+		}
+		if(cacheconfig.viewCacheType ==='mongo-view-periodic'){
+			global.CoreCache.ViewCache = new MongoViewCache({client:pcacheModel});
+		}
+
+		global.CoreCache.setStatus('active');
+	}
+	else if((cacheconfig.dataCacheType ==='redis-data-periodic' || cacheconfig.viewCacheType ==='redis-view-periodic') && cacheconfig.status==='active'){
 		// console.log('redis_config',redis_config);
 		// console.log('redis_url.parse(redis_config.url)',redis_url.parse(redis_config.url));
 		if((!redis_config.port || !redis_config.host) ){
@@ -38,10 +57,10 @@ var init_global_cache = function(){
 		}
 		redisClient = redis.createClient(redis_config_obj);
 		redisClient.on('ready',function(){
-			console.log('redisClient ready');
+			logger.info('redisClient cache ready');
 		});
 		redisClient.on('connect',function(connectionStatus){
-			console.log('redisClient connect',connectionStatus);
+			logger.info('redisClient cache connect',connectionStatus);
 			if(cacheconfig.dataCacheType ==='redis-data-periodic'){
 				global.CoreCache.DataCache = new RedisDataCache({client:redisClient});
 			}
@@ -52,11 +71,11 @@ var init_global_cache = function(){
 			global.CoreCache.setStatus('active');
 		});
 		redisClient.on('error',function(error){
-			console.log('redisClient error',error);
+			logger.error('redisClient cache error',error);
 			global.CoreCache.setStatus(false);
 		});
 		redisClient.on('end',function(){
-			console.log('redisClient connection ended');
+			logger.info('redisClient connection ended');
 			global.CoreCache.setStatus(false);
 		});
 	}
@@ -69,6 +88,64 @@ var init_global_cache = function(){
 var cache_settings = function(){
 	return cacheconfig;
 }
+
+var clear_cache = function(req,res){
+	let clearCacheFunction = (req.params.type ==='data')? global.CoreCache.DataCache.clearCache: global.CoreCache.ViewCache.clearCache;
+
+	clearCacheFunction({},(err,status)=>{
+    if (err) { 
+    	CoreController.handleDocumentQueryErrorResponse({
+				err: err,
+				res: res,
+				req: req
+			});
+    }
+    else{
+    	CoreController.respondInKind({
+				res: res,
+				req: req,
+				responseData: {clear_status:status}
+    	});
+    }
+	});
+
+};
+
+var index = function(req,res){
+	async.parallel({
+		data_cache_size:(asyncCB) => global.CoreCache.DataCache.size({},asyncCB),
+		data_cache_length:(asyncCB) => global.CoreCache.DataCache.length({},asyncCB),
+		view_cache_size:(asyncCB) => global.CoreCache.ViewCache.size({},asyncCB),
+		view_cache_length:(asyncCB) => global.CoreCache.ViewCache.length({},asyncCB),
+	},
+	(err,result)=>{
+    if (err) { 
+    	CoreController.handleDocumentQueryErrorResponse({
+				err: err,
+				res: res,
+				req: req
+			});
+    }
+    else{
+			var viewtemplate = {
+				viewname: 'p-admin/cache/index',
+				themefileext: appSettings.templatefileextension,
+				extname: 'periodicjs.ext.cache'
+			},
+			viewdata = {
+				pagedata: {
+					title: 'Cache Settings',
+					toplink: '&raquo; Cache Settings',
+					extensions: CoreUtilities.getAdminMenu()
+				},
+				user: req.user,
+				cache_config: global.CoreCache.options,
+				cache_size:result
+			};
+			CoreController.renderView(req, res, viewtemplate, viewdata);
+    }
+	});
+};
 
 /**
  * cache controller
@@ -87,7 +164,7 @@ var controller = function (resources) {
 	logger = resources.logger;
 	mongoose = resources.mongoose;
 	appSettings = resources.settings;
-	// CoreController = new ControllerHelper(resources);
+  CoreController = resources.core.controller;
 	CoreUtilities = resources.core.utilities;
 	appenvironment = appSettings.application.environment;
 	redis_config = resources.settings.redis_config;
@@ -110,7 +187,9 @@ var controller = function (resources) {
 	// console.log('cacheconfigfile',cacheconfigfile);
 	// console.log('cacheconfig',cacheconfig);
 	return {
-		cacheconfig
+		cacheconfig,
+		clear_cache,
+		index
 	};
 };
 

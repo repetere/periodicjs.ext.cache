@@ -1,0 +1,24 @@
+<div class="ts-modal-hidden-container">
+  <div id="new-<%-generictaxnomy %>-modal" data-name="new-<%-generictaxnomy %>-modal" class="ts-modal ts-modal-effect-1">
+    <section class="ts-modal-content ts-bg-text-primary-color  ts-no-heading-margin ts-padding-md ts-shadow ">
+      <form class="ts-form async-admin-ajax-forms" name="new-<%-generictaxnomy %>-form" id="new-<%-generictaxnomy %>-form" method="post" action="/<%- locals.adminPath %>/oauth/<%-generictaxnomy %>/new" >
+        <input type="hidden" name="_csrf" value=<%- locals.token %> >
+        <div  id="new-<%-generictaxnomy %>-modal-content">
+          <div class="ts-row ts-form-row">
+            <div>
+              <label class="ts-label"><%- locals.viewhelper.capitalize(generictaxnomy) %> Title</label>
+            </div>
+            <input type="text" placeholder="title" class="ts-input" name="title">
+          </div>
+        </div>
+        <div class="ts-row ts-form-row">
+          <div class="ts-col-span12 ts-text-center">
+            <input type="submit" name="new_<%-generictaxnomy %>_button" value="create <%- generictaxnomy %>" class="ts-button ts-button-primary-color ts-modal-close"/>
+            <a class="ts-button ts-modal-close">cancels</a>
+          </div>
+        </div>
+      </form>
+    </section>
+  </div>
+  <div class="ts-modal-overlay ts-bg-primary-color"></div>
+</div>

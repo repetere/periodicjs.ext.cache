@@ -1,0 +1,7 @@
+<%
+if(generictaxomony && generictaxomony.length>0){
+	generictaxomony.forEach(function(generictax,i){%>
+		<a><%- generictax.title %></a> <%if(i !== (generictaxomony.length-1)){%>,<%}%>
+	<%});
+}
+%>

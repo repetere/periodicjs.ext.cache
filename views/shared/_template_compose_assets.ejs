@@ -1,0 +1,21 @@
+<script type="template/javascript" id="compose_assets_template">
+  <? for(var y in dataelements){ var dataelement=dataelements[y]; ?>
+  <section id="ts-medialist-tagged-cb-span-<?- dataelement.id ?>" class="ts-text-sm ts-margin-md ts-button" style="margin-left:0;" >
+    <figure data-id="dataelement._id" class=" media-item-<?- y ?>">
+      <? if(dataelement.source_data.assettype && dataelement.source_data.assettype.match("image")){ ?>
+        <img class="" src="<?-dataelement.source_data.fileurl?>"/>
+      <? } else {?>
+        <div class=""> <?-dataelement.source_data.fileurl?></div>
+      <? }?>
+    </figure>
+    <div class="ts-col-span12">
+      <input type="checkbox" id="ts-medialist-tagged-cb-<?- dataelement.id ?>" name="<?- dataelement.checkboxname ?>" value="<?- dataelement.id ?>" checked="checked" class="medialistcheckbox">
+      <a href="/p-admin/content/asset/<?-dataelement.id?>" class="async-admin-ajax-link"><?- dataelement.title ?></a>
+    </div>
+    <div class="ts-col-span12">
+      <input type="checkbox" id="ts-medialist-tagged-primary-cb-<?- dataelement.id ?>" name="primaryasset" value="<?- dataelement.id ?>" <? if(dataelement.primaryasset._id === dataelement.id){?>checked="checked"<?}?> class="primaryassetlistcheckbox">
+      Primary Asset
+    </div>
+  </section>
+  <?} ?>
+</script>

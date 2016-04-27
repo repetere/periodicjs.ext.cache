@@ -1,0 +1,78 @@
+<% datedisplaytouse = genericdoc.publishat || genericdoc.createdat %>
+<details class="ts-genericdoc">
+  <summary>
+    <div class="ts-genericdoc-hoveroptions ts-pull-right">
+      <a href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>/<%- genericdoc._id %>/edit" class="async-admin-ajax-link"><img src="/extensions/periodicjs.ext.asyncadmin/img/icons/doc_edit_three.svg" alt="edit"  class="ts-icon async-admin-ajax-link" data-ajax-href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>/<%- genericdoc._id %>/edit" /></a>
+      <a target="_blank" href=" <%if(locals.cms_item_route){%>  <%- locals.cms_item_route.replace(/%doc.name%/gi,genericdoc.name).replace(/%doc._id%/gi,genericdoc._id) %> <%}else{%>
+        /item/<%- genericdoc.name%> <%}%> ">
+      <!-- <img src="/extensions/periodicjs.ext.asyncadmin/img/icons/doc_view_two.svg" alt="view"  class="ts-icon" /></a> -->
+      <a><img src="/extensions/periodicjs.ext.asyncadmin/img/icons/doc_delete.svg" alt="delete"  class="ts-icon ts-button-error-color ts-dialog-delete"  data-href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>/<%- genericdoc._id %>/delete" data-deleted-redirect-href="/<%- locals.adminPath %>/content/<%- genericdoctypeplurallink %>"/></a>
+    </div>
+    <%- genericdoc.title %>
+    <small class="ts-text-divider-text-color">(<%- locals.viewhelper.moment(datedisplaytouse).format('YYYY/MM/DD hh:mm:ssa') %>) <% if(genericdoctype==='Asset'){%><%- genericdoc.locationtype %><%} %> </small>
+
+    <hr>
+  </summary>
+  <aside class="ts-text-xs">
+    <% if(genericdoctype==='Asset'){%>
+      <div class="ts-row">
+        <div class="ts-screensm-col-span12 ts-col-span4 ts-padding-md">
+          <figure data-id="asset._id" style="margin-top:0" class="ts-col-span12 media-item-x">
+            <a data-ajax-href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>/<%- genericdoc._id %>" class="async-admin-ajax-link" > 
+            <% if(genericdoc.assettype && genericdoc.assettype.match("image")){
+              %><img class="ts-col-span12" src="<%- genericdoc.fileurl%>"/><%
+            } 
+            else{%>
+              <div class="ts-col-span12"> <%- genericdoc.fileurl%></div>
+            <%
+            }%>
+            </a>
+          </figure>
+        </div>
+        <div class="ts-screensm-col-span12 ts-col-span8 ts-padding-md">
+          <div class="ts-row ts-form-row">
+            <div style="word-break: break-word;"><strong>File URL:</strong> <%- JSON.stringify( genericdoc.fileurl) %></div>
+          </div>
+          <div class="ts-row ts-form-row">
+            <div style="word-break: break-word;"><strong>Attributes:</strong> <%- JSON.stringify( genericdoc.attributes) %></div>
+          </div>
+        </div>
+      </div>
+    <%} %>
+    <div class="ts-row">
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <% genericauthor = genericdoc.primaryauthor %> 
+        <% include genericauthor_item %> 
+      </div>
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <strong>Created Date:</strong> <%- locals.viewhelper.moment(genericdoc.createdat).format('YYYY/MM/DD - hh:mm:ssa') %>, 
+      </div>
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <strong>Updated Date:</strong> <%- locals.viewhelper.moment(genericdoc.updatedat).format('YYYY/MM/DD - hh:mm:ssa') %> 
+      </div>
+    </div>
+    <div class="ts-row">
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <strong>Content Types:</strong>
+        <% generictaxomony = genericdoc.contenttypes %>
+        <% include generictax_list_item %>
+      </div>
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <strong>Categories:</strong>
+        <% generictaxomony = genericdoc.categories %>
+        <% include generictax_list_item %>
+      </div>
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <strong>Tags:</strong>
+        <% generictaxomony = genericdoc.tags %>
+        <% include generictax_list_item %>
+      </div>
+    </div>
+    <div class="ts-row">
+      <div class="ts-col-span12">
+        <% genericassets = genericdoc.assets %>
+        <% include genericassets_list_item %>
+      </div>
+    </div>
+  </aside>
+</details>

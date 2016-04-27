@@ -1,0 +1,41 @@
+<details <% if(genericdoc){%>open="open" <%}%> class="ts-text-sm">
+  <summary>
+    <% if (typeof mediaassettitle ==='string'){%>
+      <%- mediaassettitle %>
+    <%}
+    else{%> 
+      Assets 
+    <%} %>
+  </summary>
+  <aside>
+    <% if(genericdoc){%>
+      <div class="ts-row ts-form-row">
+        <input type="file" 
+        value="Upload new assets"
+        id="padmin-assets"
+        multiple="multiple" 
+        class="ts-col-span12 ts-medialist-tagged" 
+        placeholder="Upload Assets" 
+        name="mediafiles" 
+        title="upload-assets" 
+        data-ajax-prop="assets" 
+        data-ajax-source="/p-admin/content/asset/new" 
+        data-ajax-setdata-variable="genericdoc_assets"  
+        data-ajax-setprimaryasset-variable="genericdoc_primaryasset"  
+        data-ajax-formie="edit-<%- genericdoctypename %>-form"
+        />
+      </div>
+    <%} else{%>
+      <div class="ts-row ts-form-row">
+        Save <%- genericdoctypename %> before adding assets
+      </div>
+    <%}%>
+  </aside>
+</details>
+<% if(genericdoc){%>
+<script type="text/javascript">
+  <%- locals.viewhelper.passObjToClient(genericdoc.primaryasset,"genericdoc_primaryasset") %>
+  <%- locals.viewhelper.passObjToClient(genericdoc.assets,"genericdoc_assets") %>
+</script>
+<%}%>
+<% include ../../../periodicjs.ext.asyncadmin/views/shared/_template_compose_assets %>

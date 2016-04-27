@@ -1,0 +1,24 @@
+<details open="open" class="ts-text-sm">
+	<summary>
+<!-- 		<div class="ts-pull-right">
+	      <button class="ts-button ts-button-accent-color" type="submit" name="savebutton">save
+	      </button>
+		</div> -->
+		Asset Preview
+		<a class="ts-open-modal ts-button ts-pull-right"  data-tsmodal-id="new-asset-modal">Update <%- genericdoctype %></a>
+	</summary>
+	<aside>
+		<div class="ts-row ts-form-row">
+			<figure>
+				<% if(asset.assettype && asset.assettype.match("image")){ %>
+					<img class="ts-col-span12" src="<%-asset.fileurl%>"/><%
+				} 
+				else{ %>
+					<div class="ts-col-span12"> <%-asset.fileurl%></div>
+				<% } %>
+			</figure>
+		</div>
+	</aside>
+</details>
+<% updateasset = true %>
+<% include ../p-admin/assets/_new_asset_modal %>

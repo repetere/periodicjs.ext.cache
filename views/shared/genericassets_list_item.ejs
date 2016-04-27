@@ -1,0 +1,17 @@
+<%
+if(genericassets && genericassets.length>0){
+	genericassets.forEach(function(genericasset,i){%>
+		<div class="ts-screensm-col-span12 ts-col-span3">
+			<figure>
+				<% if(genericasset.assettype && genericasset.assettype.match("image")){%>
+					<img src="<%-genericasset.fileurl%>"/>
+				<%} 
+				else{%>
+					<div class=""> <%- genericasset.fileurl%></div>
+				<%}%>
+				<caption><%- genericasset.title %></caption>
+			</figure>
+		</div>
+	<%});
+}
+%>

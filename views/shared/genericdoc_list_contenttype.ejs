@@ -1,0 +1,35 @@
+<details class="ts-genericdoc">
+  <summary>
+    <div class="ts-genericdoc-hoveroptions ts-pull-right">
+      <a href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>/<%- genericdoc._id %>/edit" class="async-admin-ajax-link"><img src="/extensions/periodicjs.ext.asyncadmin/img/icons/doc_edit_three.svg" alt="edit"  class="ts-icon async-admin-ajax-link" data-ajax-href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>/<%- genericdoc._id %>/edit" /></a>
+      <a><img src="/extensions/periodicjs.ext.asyncadmin/img/icons/doc_delete.svg" alt="delete"  class="ts-icon ts-button-error-color ts-dialog-delete"  data-href="/<%- locals.adminPath %>/content/<%- genericdoctypelink %>/<%- genericdoc._id %>/delete" data-deleted-redirect-href="/<%- locals.adminPath %>/content/<%- genericdoctypeplurallink %>"/></a>
+    </div>
+    <%- genericdoc.title %>
+    <small class="ts-text-divider-text-color">
+      <%if(genericdoc.attributes && genericdoc.attributes.length>0){
+        genericdoc.attributes.forEach(function(attribute){%>
+          <%= attribute.name %>,
+        <%});
+      }
+      else{%>
+        
+      <%}%>
+    </small>
+
+    <hr>
+  </summary>
+  <aside class="ts-text-xs">
+    <div class="ts-row">
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <% genericauthor = genericdoc.primaryauthor %> 
+        <% include genericauthor_item %> 
+      </div>
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <strong>Created Date:</strong> <%- locals.viewhelper.moment(genericdoc.createdat).format('YYYY/MM/DD - hh:mm:ssa') %>, 
+      </div>
+      <div class="ts-screensm-col-span12 ts-col-span4 ">
+        <strong>Updated Date:</strong> <%- locals.viewhelper.moment(genericdoc.updatedat).format('YYYY/MM/DD - hh:mm:ssa') %> 
+      </div>
+    </div>
+  </aside>
+</details>
